@@ -1,1 +1,5 @@
 runtime: python38
+
+env: standard
+
+entrypoint: gunicorn -b :$8080 main:app
