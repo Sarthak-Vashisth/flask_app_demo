@@ -4,7 +4,10 @@ app=Flask(__name__)
 
 @app.route("/")
 def hello():
-	return 'Hello World!'
+	str1 = """<h1>Welcome to flask Blog</h1>
+			<p>This is sample</p>
+	"""
+	return str1
 
 
 if __name__ == '__main__':
