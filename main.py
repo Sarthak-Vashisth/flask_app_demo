@@ -9,7 +9,7 @@ def hello():
 	"""
 	return str1
 
-@app.route("/")
+@app.route("/home")
 def home():
 	str1 = '<h1>Welcome to home</h1>'
 	return str1
