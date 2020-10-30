@@ -2,11 +2,11 @@ from flask import Flask
 
 app=Flask(__name__)
 
-@app.route("/")
-def hello():
-	str1 = """<h1>Welcome to flask Blog</h1>
+@app.route("/<int:id>")
+def hello(id):
+	str1 = """<h1>Welcome to flask Blog.. id is {0}</h1>
 			<p>This is sample</p>
-	"""
+	""".format(id)
 	return str1
 
 @app.route("/home")
