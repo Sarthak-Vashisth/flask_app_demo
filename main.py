@@ -6,40 +6,50 @@ app=Flask(__name__)
 api = Api(app)
 
 
-class SampleUser(ndb.Model):
-	name = ndb.StringProperty()
+
+#AIzaSyB6Qp7R6BAFoDD93L0wG_EEhY7oQuQXf3I
+class User(ndb.Model):
+	firstname = ndb.StringProperty()
+	lastname = ndb.StringProperty()
+	username = ndb.StringProperty()
+	password = ndb.StringProperty()
 	email = ndb.StringProperty()
 	phone = ndb.StringProperty()
-	sex = ndb.StringProperty()
 	address = ndb.StringProperty()
 
 
 class UserApi(Resource):
 	def post(self):
 		json_data = request.get_json(force=True)
-		user_name = json_data['name']
+		firstname = json_data['firstname']
+		lastname = json_data['lastname']
+		user_name = json_data['username']
+		user_pwd = json_data['password']
 		user_email = json_data['email']
 		user_phone = json_data['phone']
-		user_sex = json_data['sex']
 		user_address = json_data['address']
 		client = ndb.Client()
 		with client.context():
-			user_info = SampleUser(name=user_name, email=user_email,phone=user_phone,sex=user_sex,address=user_address)
+			user_info = User(firstname=firstname,lastname=lastname,username=user_name, password=user_pwd,email=user_email,phone=user_phone,address=user_address)
 			user_info.put()
+
 
 class GetUserData(Resource):
 	def get(self):
 		user_list=[]
-		query = SampleUser.query()
+		json_data = request.get_json(force=True)
+		user_name = json_data['username']
+		query = User.query().filter(User.username == user_name)
 		print(query)
 		client = ndb.Client()
 		with client.context():
 			for _ in query:
 				user_temp_obj = {}
-				user_temp_obj['name'] = _.name
+				user_temp_obj['firstname'] = _.firstname
+				user_temp_obj['lastname'] = _.lastname
+				user_temp_obj['username'] = _.username
 				user_temp_obj['email'] = _.email
 				user_temp_obj['phone'] = _.phone
-				user_temp_obj['sex'] = _.sex
 				user_temp_obj['address'] = _.address
 				user_list.append(user_temp_obj)
 		return jsonify(user_list)
