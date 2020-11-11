@@ -71,8 +71,9 @@ def signup():
 #Api route to get a new token for a valid user
 @app.route('/api/token')
 def token():
-	email = request.form.get('email')
-	password = request.form.get('password')
+	incoming_json = request.get_json()
+	email = incoming_json['email']
+	password = incoming_json['password']
 	logger = logging.getLogger(__name__)
 	try:
 		# user = firebase_auth.sign_in_with_email_and_password(email, password)
