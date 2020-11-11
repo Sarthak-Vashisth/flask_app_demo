@@ -1,0 +1,4 @@
+kind: Commodities_names
+  properties:
+    name: record_status
+    name: commodity_id
