@@ -92,7 +92,7 @@ def token():
 		return {'token': jwt}, 200
 	except Exception as e:
 		print(e)
-		return {'message': 'There was an error logging in'},400
+		return {'message': 'There was an error logging in {}'.format(e)},400
 
 def check_token(f):
 	@wraps(f)
