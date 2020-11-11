@@ -26,7 +26,7 @@ firebaseConfig = {
 # firebase = pyrebase.initialize_app()
 
 #cred = credentials.Certificate("C:/Users/sarth/Downloads/flask-app-backend-updated-firebase-adminsdk-h5zoj-d27f731c99.json")
-firebase_app = firebase_admin.initialize_app()
+firebase_app = firebase_admin.initialize_app("flask-app-backend-updated-firebase-adminsdk-h5zoj-d27f731c99.json")
 auth = firebase_admin.auth.Client(firebase_app)
 # firebase_auth=firebase.auth()
 
