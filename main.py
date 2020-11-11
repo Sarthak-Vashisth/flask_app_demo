@@ -19,7 +19,7 @@ firebaseConfig = {
     "storageBucket": "flask-app-backend-updated.appspot.com",
     "messagingSenderId": "800837754379",
     "appId": "1:800837754379:web:850df6e4b3b11336fc710e",
-    "serviceAccount": "C:/Users/sarth/Downloads/flask-app-backend-updated-firebase-adminsdk-h5zoj-d27f731c99.json"
+    #"serviceAccount": "C:/Users/sarth/Downloads/flask-app-backend-updated-firebase-adminsdk-h5zoj-d27f731c99.json"
  };
 
 # firebase = pyrebase.initialize_app()
