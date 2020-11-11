@@ -1,32 +1,33 @@
 from flask import Flask, jsonify, request, json
 from google.cloud import ndb, datastore
 from flask_restful import Api, Resource
-import pyrebase
+#import pyrebase
 import firebase_admin
 from firebase_admin import credentials, auth
 from functools import wraps
 import datetime
+import requests
 
 app=Flask(__name__)
 api = Api(app)
 
-# firebaseConfig = {
-#     "apiKey": "AIzaSyB6Qp7R6BAFoDD93L0wG_EEhY7oQuQXf3I",
-#     "authDomain": "flask-app-backend-updated.firebaseapp.com",
-#     "databaseURL": "https://flask-app-backend-updated.firebaseio.com",
-#     "projectId": "flask-app-backend-updated",
-#     "storageBucket": "flask-app-backend-updated.appspot.com",
-#     "messagingSenderId": "800837754379",
-#     "appId": "1:800837754379:web:850df6e4b3b11336fc710e",
-#     "serviceAccount": "C:/Users/sarth/Downloads/flask-app-backend-updated-firebase-adminsdk-h5zoj-d27f731c99.json"
-#  };
+firebaseConfig = {
+    "apiKey": "AIzaSyB6Qp7R6BAFoDD93L0wG_EEhY7oQuQXf3I",
+    "authDomain": "flask-app-backend-updated.firebaseapp.com",
+    "databaseURL": "https://flask-app-backend-updated.firebaseio.com",
+    "projectId": "flask-app-backend-updated",
+    "storageBucket": "flask-app-backend-updated.appspot.com",
+    "messagingSenderId": "800837754379",
+    "appId": "1:800837754379:web:850df6e4b3b11336fc710e",
+    "serviceAccount": "C:/Users/sarth/Downloads/flask-app-backend-updated-firebase-adminsdk-h5zoj-d27f731c99.json"
+ };
 
-firebase = pyrebase.initialize_app()
+# firebase = pyrebase.initialize_app()
 
 #cred = credentials.Certificate("C:/Users/sarth/Downloads/flask-app-backend-updated-firebase-adminsdk-h5zoj-d27f731c99.json")
 firebase_app = firebase_admin.initialize_app()
 auth = firebase_admin.auth.Client(firebase_app)
-firebase_auth=firebase.auth()
+# firebase_auth=firebase.auth()
 
 ##################### Models ####################################
 class Commodities_names(ndb.Model):
@@ -57,7 +58,7 @@ def signup():
     if email is None or password is None:
         return {'message': 'Error missing email or password'},400
     try:
-        user = firebase_auth.create_user_with_email_and_password(
+        user = auth.create_user(
                email=email,
                password=password
         )
@@ -72,12 +73,21 @@ def token():
 	email = request.form.get('email')
 	password = request.form.get('password')
 	try:
-		user = firebase_auth.sign_in_with_email_and_password(email, password)
+		# user = firebase_auth.sign_in_with_email_and_password(email, password)
 		#print(dir(user.items()))
 		#firebase_auth.send_email_verification(user['idToken'])
 		#print(firebase_auth.get_account_info(user['idToken']))
 		# firebase_auth.create_custom_token(user['users'][0])
-		jwt = user['idToken']
+		print(dir(credentials))
+		print(credentials.service_account)
+		# print(dir(firebase_app.credential.get_credential()))
+		# print(firebase_app.credential.get_access_token())
+		request_ref = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key={0}".format(firebaseConfig['apiKey'])
+		headers = {"content-type": "application/json; charset=UTF-8"}
+		data = json.dumps({"email": email, "password": password, "returnSecureToken": True})
+		response_object = requests.post(request_ref, headers=headers, data=data)
+		response_json = response_object.json()
+		jwt = response_json['idToken']
 		print(jwt)
 		return {'token': jwt}, 200
 	except Exception as e:
