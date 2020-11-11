@@ -7,6 +7,7 @@ from firebase_admin import credentials, auth
 from functools import wraps
 import datetime
 import requests
+import logging
 
 app=Flask(__name__)
 api = Api(app)
@@ -72,6 +73,7 @@ def signup():
 def token():
 	email = request.form.get('email')
 	password = request.form.get('password')
+	logger = logging.getLogger(__name__)
 	try:
 		# user = firebase_auth.sign_in_with_email_and_password(email, password)
 		#print(dir(user.items()))
@@ -82,6 +84,7 @@ def token():
 		print(credentials.service_account)
 		# print(dir(firebase_app.credential.get_credential()))
 		# print(firebase_app.credential.get_access_token())
+		logger.info("email ----> %s",email)
 		request_ref = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key={0}".format(firebaseConfig['apiKey'])
 		headers = {"content-type": "application/json; charset=UTF-8"}
 		data = json.dumps({"email": email, "password": password, "returnSecureToken": True})
@@ -92,6 +95,7 @@ def token():
 		return {'token': jwt}, 200
 	except Exception as e:
 		print(e)
+		logger.error("There was an error logging in: %s", e)
 		return {'message': 'There was an error logging in {}'.format(e)},400
 
 def check_token(f):
