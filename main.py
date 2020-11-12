@@ -12,16 +12,16 @@ import logging
 app=Flask(__name__)
 api = Api(app)
 
-firebaseConfig = {
-    "apiKey": "AIzaSyB6Qp7R6BAFoDD93L0wG_EEhY7oQuQXf3I",
-    "authDomain": "flask-app-backend-updated.firebaseapp.com",
-    "databaseURL": "https://flask-app-backend-updated.firebaseio.com",
-    "projectId": "flask-app-backend-updated",
-    "storageBucket": "flask-app-backend-updated.appspot.com",
-    "messagingSenderId": "800837754379",
-    "appId": "1:800837754379:web:850df6e4b3b11336fc710e",
-    #"serviceAccount": "C:/Users/sarth/Downloads/flask-app-backend-updated-firebase-adminsdk-h5zoj-d27f731c99.json"
- };
+# firebaseConfig = {
+#     "apiKey": "AIzaSyB6Qp7R6BAFoDD93L0wG_EEhY7oQuQXf3I",
+#     "authDomain": "flask-app-backend-updated.firebaseapp.com",
+#     "databaseURL": "https://flask-app-backend-updated.firebaseio.com",
+#     "projectId": "flask-app-backend-updated",
+#     "storageBucket": "flask-app-backend-updated.appspot.com",
+#     "messagingSenderId": "800837754379",
+#     "appId": "1:800837754379:web:850df6e4b3b11336fc710e",
+#     #"serviceAccount": "C:/Users/sarth/Downloads/flask-app-backend-updated-firebase-adminsdk-h5zoj-d27f731c99.json"
+#  };
 
 # firebase = pyrebase.initialize_app()
 
@@ -86,7 +86,7 @@ def token():
 		# print(dir(firebase_app.credential.get_credential()))
 		# print(firebase_app.credential.get_access_token())
 		logger.info("email ----> %s",email)
-		request_ref = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key={0}".format(firebaseConfig['apiKey'])
+		request_ref = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key={0}".format("AIzaSyB6Qp7R6BAFoDD93L0wG_EEhY7oQuQXf3I")
 		headers = {"content-type": "application/json; charset=UTF-8"}
 		data = json.dumps({"email": email, "password": password, "returnSecureToken": True})
 		response_object = requests.post(request_ref, headers=headers, data=data)
@@ -109,7 +109,7 @@ def check_token(f):
 			request.user = user
 		except Exception as e:
 			print(e)
-			return {'message':'Invalid token provided. here'},400
+			return {'message':'Invalid token provided'},400
 		return f(*args, **kwargs)
 	return wrap
 
